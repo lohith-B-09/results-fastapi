@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Result Portal</title>
+
+    <style>
+
+        /* ================================
+           RESET & GLOBAL
+        ================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #134484 0%,
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    #1c3da9 0%,
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #1d3145,
+                    #0e0f14
+                );
+
+            color: #1e293b;
+            padding: 40px 20px;
+        }
+
+
+        /* ================================
+           MAIN CONTAINER
+        ================================= */
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            margin: auto;
+
+            background: rgba(94, 185, 224, 0.9);
+
+            border: 1px solid rgba(13, 11, 11, 0.8);
+
+            border-radius: 24px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, 0.12),
+                0 5px 15px rgba(15, 23, 42, 0.05);
+
+            backdrop-filter: blur(15px);
+
+            animation: fadeIn 0.7s ease;
+        }
+
+
+        /* ================================
+           HEADING
+        ================================= */
+
+        h1 {
+            text-align: center;
+
+            font-size: 36px;
+
+            font-weight: 700;
+
+            color: #0f172a;
+
+            margin-bottom: 35px;
+        }
+
+        h1::after {
+            content: "";
+
+            display: block;
+
+            width: 70px;
+
+            height: 4px;
+
+            margin: 12px auto 0;
+
+            background: linear-gradient(
+                90deg,
+                #2563eb,
+                #7c3aed
+            );
+
+            border-radius: 10px;
+        }
+
+
+        /* ================================
+           SEARCH BOX
+        ================================= */
+
+        .search-box {
+            display: flex;
+
+            gap: 12px;
+
+            justify-content: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        /* ================================
+           INPUT
+        ================================= */
+
+        input {
+            width: 65%;
+
+            padding: 15px 18px;
+
+            font-size: 16px;
+
+            border: 2px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #1e293b;
+
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* ================================
+           SEARCH BUTTON
+        ================================= */
+
+        button {
+            padding: 15px 25px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px
+                rgba(37, 99, 235, 0.25);
+
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 25px
+                rgba(37, 99, 235, 0.35);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+
+        /* ================================
+           STUDENT RESULT CARD
+        ================================= */
+
+        .student-card {
+            margin-top: 20px;
+
+            padding: 30px;
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 10px 30px
+                rgba(15, 23, 42, 0.08);
+
+            animation: slideUp 0.5s ease;
+        }
+
+
+        /* Student Name */
+
+        .student-card h2 {
+            font-size: 28px;
+
+            color: #1d4ed8;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* Student Information */
+
+        .student-card p {
+            font-size: 16px;
+
+            margin: 10px 0;
+
+            color: #475569;
+        }
+
+        .student-card strong {
+            color: #0f172a;
+        }
+
+
+        /* ================================
+           RESULT TABLE
+        ================================= */
+
+        table {
+            width: 100%;
+
+            margin-top: 25px;
+
+            border-collapse: separate;
+
+            border-spacing: 0;
+
+            overflow: hidden;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+
+            color: white;
+
+            padding: 15px;
+
+            text-align: left;
+
+            font-size: 15px;
+        }
+
+        td {
+            padding: 14px 15px;
+
+            border-top: 1px solid #e2e8f0;
+
+            color: #334155;
+
+            background: #ffffff;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+
+            transition: 0.2s ease;
+        }
+
+
+        /* ================================
+           NOT FOUND
+        ================================= */
+
+        .not-found {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #dc2626;
+
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+            border-radius: 12px;
+
+            font-weight: 600;
+
+            animation: shake 0.4s ease;
+        }
+
+
+        /* ================================
+           ANIMATIONS
+        ================================= */
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @keyframes slideUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @keyframes shake {
+
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+
+        /* ================================
+           MOBILE RESPONSIVE
+        ================================= */
+
+        @media (max-width: 650px) {
+
+            body {
+                padding: 20px 10px;
+            }
+
+            .container {
+                padding: 25px 18px;
+
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .student-card {
+                padding: 20px;
+            }
+
+            .student-card h2 {
+                font-size: 23px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 11px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>🎓 Student Result Portal</h1>
+
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="register_number"
+                placeholder="Enter Register Number"
+            >
+
+            <button onclick="searchResult()">
+                🔍 Search Result
+            </button>
+
+        </div>
+
+
+        <div id="result"></div>
+
+    </div>
+
+
+    <script>
+
+        async function searchResult() {
+
+            let registerNumber =
+                document.getElementById(
+                    "register_number"
+                ).value.trim();
+
+
+            if (registerNumber === "") {
+
+                document.getElementById("result").innerHTML =
+                    '<div class="not-found">⚠️ Please enter a register number</div>';
+
+                return;
+            }
+
+
+            try {
+
+                let response =
+                    await fetch(
+                        "http://127.0.0.1:8000/results"
+                    );
+
+
+                let students =
+                    await response.json();
+
+
+                let student =
+                    students.find(
+                        student =>
+                            student.register_number === registerNumber
+                    );
+
+
+                if (student) {
+
+                    let output = `
+
+                        <div class="student-card">
+
+                            <h2>
+                                👨‍🎓 ${student.student_name}
+                            </h2>
+
+                            <p>
+                                <strong>
+                                    Register Number:
+                                </strong>
+                                ${student.register_number}
+                            </p>
+
+                            <p>
+                                <strong>
+                                    Department:
+                                </strong>
+                                ${student.department}
+                            </p>
+
+
+                            <table>
+
+                                <tr>
+                                    <th>📚 Subject</th>
+                                    <th>🎯 Grade</th>
+                                </tr>
+
+                    `;
+
+
+                    student.subjects.forEach(subject => {
+
+                        output += `
+
+                            <tr>
+
+                                <td>
+                                    ${subject.subject_name}
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        ${subject.grade}
+                                    </strong>
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    });
+
+
+                    output += `
+
+                            </table>
+
+                        </div>
+
+                    `;
+
+
+                    document.getElementById("result").innerHTML =
+                        output;
+
+
+                } else {
+
+                    document.getElementById("result").innerHTML =
+                        '<div class="not-found">❌ Student Not Found</div>';
+
+                }
+
+            }
+
+            catch (error) {
+
+                document.getElementById("result").innerHTML =
+                    '<div class="not-found">⚠️ Unable to connect to the server</div>';
+
+                console.error(error);
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
